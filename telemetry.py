@@ -36,6 +36,7 @@ _orphans = deque(maxlen=500)  # Logs emitted outside a request (startup, backgro
 _writer = ThreadPoolExecutor(max_workers=1, thread_name_prefix="telemetry")
 _pending = set()
 _pending_lock = threading.Lock()
+_write_slots = threading.BoundedSemaphore(64)
 _schema_ready = set()
 _propagator = TraceContextTextMapPropagator()
 _quiet = logging.getLogger("airline.telemetry")  # Telemetry's own problems go to stdout only, never back into telemetry.
@@ -237,10 +238,24 @@ def submit(spans=(), logs=()):
         return
     # The database is chosen now, on the request's thread, not later on the writer thread.
     target = (os.getenv("TURSO_DATABASE_URL") or "file:demo.sqlite", os.getenv("TURSO_AUTH_TOKEN", ""))
-    future = _writer.submit(_write, target, spans, logs)
+    if not _write_slots.acquire(blocking=False):
+        _quiet.warning("telemetry_batch_dropped reason=queue_full")
+        return
+    try:
+        future = _writer.submit(_write, target, spans, logs)
+    except Exception:
+        _write_slots.release()
+        _quiet.warning("telemetry_batch_dropped reason=writer_unavailable")
+        return
     with _pending_lock:
         _pending.add(future)
-    future.add_done_callback(lambda f: _pending.discard(f))
+
+    def completed(done):
+        with _pending_lock:
+            _pending.discard(done)
+        _write_slots.release()
+
+    future.add_done_callback(completed)
 
 
 def flush(buffer):

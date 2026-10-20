@@ -340,6 +340,9 @@ function play(base64) {
   source.onended = () => { playing.delete(source); if (!playing.size) $('orb').classList.remove('speaking'); };
 }
 async function microphone() {
+  if (new URLSearchParams(location.search).get('microphone') === 'off') {
+    throw new DOMException('Microphone disabled for this call.', 'NotAllowedError');
+  }
   stream = await navigator.mediaDevices.getUserMedia({ audio: { channelCount: 1, echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
   inputContext = new AudioContext({ sampleRate: 16000 });
   if (inputContext.sampleRate !== 16000) throw new Error('This browser cannot capture 16 kHz audio. Try current Chrome or Edge.');
