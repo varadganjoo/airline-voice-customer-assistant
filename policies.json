@@ -1,0 +1,95 @@
+{
+  "reviewed": "2026-09-29",
+  "policies": {
+    "changes": {
+      "title": "Flight changes, change fees and 24-hour policy",
+      "facts": [
+        "No change fees on Economy, Extra Legroom and premium cabin tickets for flights within the U.S., between the U.S. and Mexico or the Caribbean, and international flights that start in the U.S. The customer pays any fare difference.",
+        "If the new flight is cheaper, standard fare tickets may keep the difference as a future flight credit.",
+        "Basic Economy tickets cannot be changed unless first upgraded to Economy or a premium cabin. International trips not starting in the U.S. may still have change fees.",
+        "24-hour policy: a ticket booked at least one week before departure can be cancelled within 24 hours of booking for a full refund. All flights for all passengers must be cancelled; partial cancels do not qualify.",
+        "Same-day changes: Elite members may switch to another flight on the same day free; other travelers may do so within 24 hours of the original flight and may pay a price difference. Same-day flights must have the same departure and arrival airports and be operated by Skyway or Skyway Regional.",
+        "Standby for an earlier flight on the day of travel is free. Standby seats are assigned 30 minutes before domestic and 60 minutes before international departures, prioritized by Elite status.",
+        "Changes can be made on the airline website, the Skyway app, at the airport, or by phone (phone changes may carry a service fee)."
+      ]
+    },
+    "refunds": {
+      "title": "Refund policies",
+      "facts": [
+        "Qualifying refunds go back to the original form of payment. Credit card refunds are processed within 7 business days of the request; other payment types within 20 business days.",
+        "Direct Skyway purchases may qualify for the 24-hour cancellation policy: cancel the entire reservation within 24 hours, with purchase at least one week before departure. Other refund requests remain subject to review.",
+        "When cancelling, customers are offered a travel credit or, if the ticket qualifies, a refund.",
+        "Unplanned events may warrant review when the ticket cannot be used within a year: death, certain illnesses, jury duty or new/changed military orders. Supporting documents and refund-team approval are required; the caller stating a reason is not approval.",
+        "Tickets bought through a travel agency are refunded by that agency; tickets issued by another airline are refunded by that airline.",
+        "Paid seats, Wi-Fi, Priority Access and Priority Boarding that were not received because of a schedule change or cancellation can be refunded. Travel bundles, Airline Lounge memberships and purchased miles are nonrefundable.",
+        "Skyway Rewards upgrade service fees are refunded if the upgrade does not clear.",
+        "Reissued or partially used tickets require refund valuation based on charges and segments flown. Existing flight credit is not automatically convertible to cash."
+      ],
+      "reviewed": "2026-10-07"
+    },
+    "disruptions": {
+      "title": "Delayed or cancelled flights",
+      "facts": [
+        "If Skyway cancels a flight, delays or reschedules it by 3 hours or more (domestic) or 6 hours or more (international), downgrades the cabin, or changes airports or adds stops, the customer may decline the alternative and get a full refund to the original payment method.",
+        "Accepting the rebooking (for example flying the delayed or rescheduled flight) means the customer is no longer entitled to a refund under U.S. DOT rules.",
+        "Change fees are waived when a customer changes plans because of a disruption. A customer stranded at a connection with no flights can return to their origin for a refund.",
+        "Paid services not received on a disrupted flight (preferred seats, Wi-Fi) can be refunded.",
+        "For delays over an hour, cancellations or missed connections, rebooking options, bag info, and eligible hotel or meal vouchers are shown in the Skyway app and on the airline website. For disruptions outside Skyway's control, discounted hotels may be available.",
+        "Checked bag fees are refunded if a bag is delayed more than 12 hours on domestic flights, more than 15 hours on international flights under 12 hours, or more than 30 hours on international flights over 12 hours."
+      ]
+    },
+    "baggage": {
+      "title": "Checked bags",
+      "facts": [
+        "Maximum checked bag size is 62 linear inches (158 cm) including handles and wheels.",
+        "Weight limit is 50 lb (23 kg) in Economy and Premium Economy and 70 lb (32 kg) in Business and First Class. Elite and partner Gold members may have a 70 lb limit.",
+        "Fees depend on route and purchase date and increased for many tickets bought on or after April 3, 2026. Skyway's Basic Economy page lists first checked bag fees from $45 prepaid, $50 at the lobby and $75 at the gate for tickets purchased on or after April 3, 2026. Exact prices come from the baggage fee calculator.",
+        "Extra, oversized and overweight bags cost more."
+      ]
+    },
+    "seats": {
+      "title": "Extra Legroom seating",
+      "facts": [
+        "Extra Legroom seats offer extra legroom near the front of Economy and can be purchased any time from booking to check-in on Skyway and most Skyway Regional flights.",
+        "Skyway Rewards Elite members can select available Extra Legroom seats free (timing and companion allowance depend on status).",
+        "Extra Legroom bought with the ticket is refundable if cancelled within 24 hours or when a refundable ticket is cancelled. If Skyway moves the customer out of Extra Legroom or a schedule change leaves none available, the seat fee is refunded.",
+        "Annual Extra Legroom subscriptions start at $799."
+      ]
+    },
+    "upgrades": {
+      "title": "Upgrades",
+      "facts": [
+        "Paid Cabin Upgrades with money or miles are open to all travelers when space is available, from ticketing until check-in, for Premium Economy, First Class or Business class. Miles cannot be used for upgrades at the airport.",
+        "Elite Platinum and above can request Upgrade Points upgrades, which are waitlisted and only deducted if confirmed.",
+        "Complimentary Elite Upgrades are processed starting 96 hours (1K), 72 hours (Platinum), 48 hours (Gold) or on the day of departure (Silver) on eligible North American routes.",
+        "Skyway Rewards Upgrade Awards are waitlisted requests paid with miles, sometimes with a co-pay; miles and fees are refunded if the upgrade does not clear."
+      ]
+    },
+    "pets": {
+      "title": "Traveling with pets",
+      "facts": [
+        "Only cats and dogs may travel, in the cabin, space permitting; the pet fee is $150 each way. Skyway no longer accepts pets as checked cargo (except for certain military and State Department travelers).",
+        "Up to 2 pets per person on most flights (a second seat must be bought next to the customer); some narrow-body aircraft allow only one.",
+        "Hard-sided carriers up to 17.5 x 12 x 9 in; soft-sided up to 18 x 11 x 11 in. No weight or breed limits.",
+        "Pets are not allowed to, from or through places including Hawaii, the UK, Ireland, Australia, New Zealand, Hong Kong, the Philippines and others. International trips need health and vaccination certificates; dogs entering the U.S. need the CDC form."
+      ]
+    },
+    "accessibility": {
+      "title": "Wheelchairs and accessible travel",
+      "facts": [
+        "Checking a wheelchair or mobility device (manual, electric, scooter, walker, cane, crutches) is free and does not count toward the bag allowance. Customers should tell Skyway in advance.",
+        "Wheelchair assistance through the airport can be requested on the reservation. Arriving an hour before the minimum check-in time is recommended.",
+        "Skyway can note seating accommodations, service animals, blind or low vision, deaf or hard of hearing, and cognitive disability assistance on a reservation.",
+        "If a wheelchair does not fit the booked aircraft, customers should contact Skyway to discuss options; a price difference for a more expensive compatible flight may be refundable."
+      ]
+    },
+    "credits": {
+      "title": "Travel credits",
+      "facts": [
+        "Future flight credits are issued when a trip is cancelled or changed to a cheaper flight. They can be used for Skyway, Skyway Regional and partner flights booked on the airline website or the app, and some non-ticket items at booking.",
+        "Future flight credits normally can only be used by the traveler they were issued to. Travel certificates (from volunteering a seat or goodwill) can be used by anyone.",
+        "Most travel credits expire one year after issue; the date is shown on the credit."
+      ]
+    }
+  }
+}
