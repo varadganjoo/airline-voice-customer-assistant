@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Voice Agent Observability</title>
+  <link rel="stylesheet" href="/ops.css">
+</head>
+<body>
+  <header class="bar">
+    <div class="bar-inner">
+      <a class="brand" href="/ops">SKYWAY <span>VOICE AGENT · OBSERVABILITY</span></a>
+      <div class="bar-controls">
+        <label>Window
+          <select id="window">
+            <option value="15m">Last 15 min</option>
+            <option value="1h" selected>Last hour</option>
+            <option value="6h">Last 6 hours</option>
+            <option value="24h">Last 24 hours</option>
+          </select>
+        </label>
+        <label class="check"><input id="auto" type="checkbox" checked> Live</label>
+        <span id="updated" class="muted" role="status"></span>
+        <a class="link" href="/">Open voice agent ↗</a>
+      </div>
+    </div>
+    <nav class="tabs" aria-label="Views">
+      <button type="button" data-tab="overview" aria-selected="true">Overview</button>
+      <button type="button" data-tab="traces" aria-selected="false">Traces</button>
+      <button type="button" data-tab="calls" aria-selected="false">Calls</button>
+      <button type="button" data-tab="logs" aria-selected="false">Logs</button>
+    </nav>
+  </header>
+
+  <main>
+    <p id="error" class="error" role="alert" hidden></p>
+
+    <section id="overview" class="view">
+      <div id="kpis" class="kpis"></div>
+
+      <section class="card">
+        <div class="card-head"><h2>Dependencies</h2><p class="muted">Calls, failures and circuit-breaker state for each external dependency.</p></div>
+        <div id="deps" class="deps"></div>
+      </section>
+
+      <div class="grid2">
+        <section class="card">
+          <div class="card-head"><h2>Traffic</h2><p class="muted">API requests per interval; server errors in red.</p></div>
+          <div id="chart-traffic" class="chart"></div>
+        </section>
+        <section class="card">
+          <div class="card-head"><h2>API latency</h2><p class="muted">Server span duration, p50 and p95 (ms).</p></div>
+          <div id="chart-latency" class="chart"></div>
+        </section>
+        <section class="card">
+          <div class="card-head"><h2>Voice reply latency</h2><p class="muted">End of the caller's turn to the agent's first audio, p50 (ms). Measured in the browser.</p></div>
+          <div id="chart-voice" class="chart"></div>
+        </section>
+        <section class="card">
+          <div class="card-head"><h2>Change approvals</h2><p class="muted">How the approval ladder resolved: natural reply, closed yes/no, then keypad.</p></div>
+          <div id="approvals"></div>
+        </section>
+      </div>
+
+      <div class="grid2">
+        <section class="card">
+          <div class="card-head"><h2>Agent tools</h2><p class="muted">Tool calls by outcome, with p95 latency.</p></div>
+          <div id="tools" class="table-wrap"></div>
+        </section>
+        <section class="card">
+          <div class="card-head"><h2>Endpoints</h2><p class="muted">Rate, errors and duration per route.</p></div>
+          <div id="routes" class="table-wrap"></div>
+        </section>
+      </div>
+    </section>
+
+    <section id="traces" class="view" hidden>
+      <form id="trace-filter" class="filters">
+        <input id="trace-q" type="search" placeholder="Filter by route, tool, outcome or call" maxlength="80" aria-label="Filter traces">
+        <label class="check"><input id="trace-errors" type="checkbox"> Errors only</label>
+        <span id="trace-call" class="chip" hidden></span>
+      </form>
+      <div id="trace-list" class="table-wrap card"></div>
+    </section>
+
+    <section id="calls" class="view" hidden>
+      <div id="call-list" class="table-wrap card"></div>
+    </section>
+
+    <section id="logs" class="view" hidden>
+      <form id="log-filter" class="filters">
+        <input id="log-q" type="search" placeholder="Search events" maxlength="80" aria-label="Search logs">
+        <select id="log-level" aria-label="Level">
+          <option value="">All levels</option>
+          <option value="info">Info</option>
+          <option value="warning">Warning</option>
+          <option value="error">Error</option>
+        </select>
+      </form>
+      <div id="log-list" class="table-wrap card"></div>
+    </section>
+  </main>
+
+  <aside id="call-drawer" class="drawer" hidden aria-labelledby="call-title">
+    <div class="drawer-head">
+      <div><p class="eyebrow">CALL · AI SESSION</p><h2 id="call-title"></h2><p id="call-meta" class="muted"></p></div>
+      <button id="call-close" type="button" aria-label="Close call">✕</button>
+    </div>
+    <div id="call-kpis" class="kpis compact"></div>
+    <h3>Journey</h3>
+    <div id="call-stages" class="stages"></div>
+    <h3>Change approvals</h3>
+    <div id="call-approvals"></div>
+    <div class="timeline-head">
+      <h3>Timeline</h3>
+      <button id="call-traces" class="text-button" type="button">All traces for this call →</button>
+    </div>
+    <p class="muted">Server requests, agent turns and voice events in order. Select a request to open its trace.</p>
+    <div id="call-timeline" class="timeline"></div>
+  </aside>
+
+  <aside id="drawer" class="drawer" hidden aria-labelledby="drawer-title">
+    <div class="drawer-head">
+      <div><p class="eyebrow">TRACE</p><h2 id="drawer-title"></h2><p id="drawer-meta" class="muted mono"></p></div>
+      <button id="drawer-close" type="button" aria-label="Close trace">✕</button>
+    </div>
+    <div id="waterfall" class="waterfall"></div>
+    <div id="span-detail" class="span-detail"></div>
+    <h3>Correlated logs</h3>
+    <div id="trace-logs" class="table-wrap"></div>
+  </aside>
+
+  <footer>Telemetry holds timings, names, outcomes and hashed call IDs only: no transcripts, codes or booking contents. Retained 24 hours.</footer>
+  <script type="module" src="/ops.js"></script>
+</body>
+</html>

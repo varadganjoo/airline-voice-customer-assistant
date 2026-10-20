@@ -1,0 +1,16 @@
+{
+  "name": "airline-voice-customer-assistant",
+  "private": true,
+  "type": "module",
+  "engines": { "node": ">=22.14" },
+  "scripts": {
+    "build": "node scripts/build.js",
+    "start": "npm run build && uv run --frozen --env-file .env python scripts/start.py",
+    "test": "uv run --frozen python -m unittest discover -s test -p test_*.py && node test/frontend.test.mjs",
+    "smoke": "uv run --frozen --env-file .env python scripts/smoke.py"
+  },
+  "dependencies": {
+    "@google/genai": "2.24.0"
+  },
+  "devDependencies": { "esbuild": "0.28.2" }
+}
