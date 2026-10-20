@@ -1,0 +1,149 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Skyway Customer Service · Voice Agent</title>
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <div class="site-header-inner">
+      <a class="brand" href="/">SKYWAY <span>CUSTOMER SERVICE</span></a>
+      <span class="badge">AI VOICE AGENT · CONCEPT DEMO · <a href="/ops" target="_blank" rel="noopener">OBSERVABILITY ↗</a></span>
+    </div>
+  </header>
+
+  <main>
+    <section class="intro" aria-labelledby="page-title">
+      <h1 id="page-title">Your customer service workspace</h1>
+      <p>Call, manage your trip, and follow the conversation as it happens.</p>
+    </section>
+
+    <p id="error" class="error" role="alert" hidden></p>
+    <div id="toasts" class="toasts" role="status" aria-live="polite"></div>
+
+    <div id="workspace" class="workspace">
+      <aside class="trip-rail" aria-label="Your trips">
+        <section class="panel trip-panel">
+          <p class="eyebrow">BOOKING DETAILS</p>
+          <h2>Your trips</h2>
+          <p class="small">Use a confirmation number below when asked. Trips are simulated; changes and refunds follow the ticket’s eligibility rules.</p>
+          <div id="bookings"><p class="empty">Your trips appear when you call.</p></div>
+        </section>
+        <section class="panel messages-panel" aria-labelledby="messages-title">
+          <h2 id="messages-title">Text messages</h2>
+          <p class="small">Read the verification code to the agent when asked.</p>
+          <div id="inbox"><p class="empty">No messages yet.</p></div>
+        </section>
+      </aside>
+
+      <section class="conversation" aria-label="Voice conversation">
+        <section class="panel call-panel" aria-labelledby="call-title">
+          <div class="call-heading">
+            <div>
+              <p class="eyebrow">SKYWAY AIRLINES</p>
+              <h2 id="call-title">Customer service</h2>
+            </div>
+            <span id="status" role="status">Ready</span>
+          </div>
+
+          <div class="call-console">
+            <div class="call-display">
+              <div id="orb" aria-hidden="true"><span></span><span></span><span></span><span></span><span></span></div>
+              <div class="voice-copy">
+                <p id="voice-hint">Call Skyway whenever you’re ready.</p>
+                <p class="small">Speak naturally. You can interrupt at any time.</p>
+                <label class="mic-level" for="mic-level">Microphone <meter id="mic-level" min="0" max="1" value="0">0</meter></label>
+                <p id="tool-status" class="small" role="status"></p>
+              </div>
+            </div>
+            <div class="controls" aria-label="Call controls">
+              <button id="start" class="primary" type="button">Call Skyway</button>
+              <button id="mute" type="button" disabled aria-pressed="false">Mute</button>
+              <button id="keypad-toggle" type="button" disabled aria-expanded="false" aria-controls="dialpad">Keypad</button>
+              <button id="end" class="danger" type="button" disabled>Hang up</button>
+            </div>
+          </div>
+          <div id="dialpad" class="dialpad" hidden>
+            <output id="dialpad-display" class="dialpad-display" aria-live="polite" aria-label="Keys pressed"></output>
+            <div class="dialpad-keys" role="group" aria-label="Dial pad">
+              <button type="button" data-key="1">1<span>&nbsp;</span></button>
+              <button type="button" data-key="2">2<span>ABC</span></button>
+              <button type="button" data-key="3">3<span>DEF</span></button>
+              <button type="button" data-key="4">4<span>GHI</span></button>
+              <button type="button" data-key="5">5<span>JKL</span></button>
+              <button type="button" data-key="6">6<span>MNO</span></button>
+              <button type="button" data-key="7">7<span>PQRS</span></button>
+              <button type="button" data-key="8">8<span>TUV</span></button>
+              <button type="button" data-key="9">9<span>WXYZ</span></button>
+              <button type="button" data-key="*">*<span>&nbsp;</span></button>
+              <button type="button" data-key="0">0<span>+</span></button>
+              <button type="button" data-key="#">#<span>&nbsp;</span></button>
+            </div>
+          </div>
+          <p class="small notice">Concept demo of an AI agent on Skyway’s phone line. Reservations, prices, payments, refunds and transfers are simulated; changes you make are saved.</p>
+        </section>
+
+        <section id="proposal-card" class="panel approval" hidden>
+          <p class="eyebrow">ABOUT TO CHANGE</p>
+          <h2>Waiting for your OK</h2>
+          <p id="proposal-text"></p>
+          <p id="proposal-hint" class="small">Tell the agent in your own words whether to go ahead, or what you’d like instead.</p>
+        </section>
+
+        <section class="panel transcript-panel" aria-labelledby="transcript-title">
+          <div class="transcript-heading">
+            <div>
+              <p class="eyebrow">THE CONVERSATION</p>
+              <h3 id="transcript-title">Live transcript</h3>
+            </div>
+            <button id="clear" class="text-button" type="button">Clear transcript</button>
+          </div>
+          <div id="transcript" tabindex="0" role="log" aria-live="polite" aria-label="Conversation transcript">
+            <p class="empty">The call transcript will appear here.</p>
+          </div>
+          <form id="text-form" class="text-form">
+            <label class="sr-only" for="text">Type a message</label>
+            <input id="text" placeholder="Can’t talk right now? Type to the agent…" maxlength="2000" disabled>
+            <button id="send" disabled>Send</button>
+          </form>
+        </section>
+      </section>
+
+      <aside class="activity-rail" aria-label="Call details">
+        <section class="panel notes-panel" aria-labelledby="notes-title">
+          <div class="notes-heading">
+            <p class="eyebrow">THE CUSTOMER INTERACTION</p>
+            <h2 id="notes-title">Interaction notes <span id="notes-count">0</span></h2>
+            <p class="small">Customer goals, progress, and next steps. Saved as the call unfolds.</p>
+          </div>
+          <ol id="interaction-notes" aria-label="Timestamped interaction notes" tabindex="0">
+            <li class="empty">Notes will appear when your call starts.</li>
+          </ol>
+        </section>
+        <section id="handoff-card" class="panel" hidden>
+          <p class="eyebrow">FOR THE REPRESENTATIVE</p>
+          <h2>Handoff brief</h2>
+          <p class="small">Saved before the simulated transfer. This is the brief a connected representative system would receive.</p>
+          <p id="handoff-booking" class="small"></p>
+          <strong>Reason</strong>
+          <p id="handoff-reason" class="handoff-notes"></p>
+          <strong>Case notes</strong>
+          <p id="handoff-notes" class="handoff-notes"></p>
+          <strong>Completed changes</strong>
+          <ul id="handoff-actions"></ul>
+          <p id="handoff-pending" class="small"></p>
+        </section>
+        <details class="panel policy-panel">
+          <summary>Policies checked</summary>
+          <div id="sources"><p class="empty">Policy sources appear here during your call.</p></div>
+        </details>
+      </aside>
+    </div>
+  </main>
+
+  <footer>Skyway Airlines is a fictional airline. Independent concept demo.</footer>
+  <script type="module" src="/app.js"></script>
+</body>
+</html>
