@@ -97,7 +97,7 @@ class BackendTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix="airline-python-test-")
         self.url = str(Path(self.temp.name) / "test.sqlite")
-        self.env = patch.dict(os.environ, {"TURSO_DATABASE_URL": self.url, "TURSO_AUTH_TOKEN": "", "GEMINI_API_KEY": "", "ACCESS_KEY": "", "APP_ORIGIN": ""})
+        self.env = patch.dict(os.environ, {"APP_ENV": "development", "TURSO_DATABASE_URL": self.url, "TURSO_AUTH_TOKEN": "", "GEMINI_API_KEY": "", "ACCESS_KEY": "", "APP_ORIGIN": ""})
         self.env.start()
         self.store = Store(self.url)
         self.store.init()

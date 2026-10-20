@@ -4,6 +4,18 @@ import { readFile } from 'node:fs/promises';
 import vm from 'node:vm';
 import { webcrypto } from 'node:crypto';
 
+// Text-only calls must never open the device, including before the user can press Mute.
+const frontendSource = await readFile('frontend/app.js', 'utf8');
+let microphoneRequests = 0;
+const microphoneOnly = frontendSource.slice(frontendSource.indexOf('async function microphone()'), frontendSource.indexOf('function flushTools()'));
+const disabledMicrophone = vm.runInNewContext(microphoneOnly + '\nmicrophone;', {
+  URLSearchParams, DOMException, location: { search: '?microphone=off' },
+  navigator: { mediaDevices: { getUserMedia: async () => { microphoneRequests++; throw new Error('Device opened'); } } },
+});
+await assert.rejects(disabledMicrophone(), error => error.name === 'NotAllowedError');
+assert.equal(microphoneRequests, 0);
+console.log('PASS: microphone=off never requests or opens an audio input device');
+
 const app = (await readFile('frontend/app.js', 'utf8')).replace(/^import[^\n]+\n/, '');
 const source = app.split('function text(parent')[0] + app.slice(app.indexOf('function flushTools()'), app.indexOf('function showSource('));
 let requests = [], fetchImpl, rendered = [], sent = [];

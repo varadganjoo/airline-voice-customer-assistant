@@ -22,9 +22,11 @@ class TelemetryTests(unittest.TestCase):
     def setUp(self):
         self.temp = tempfile.TemporaryDirectory(prefix="airline-telemetry-test-")
         self.url = str(Path(self.temp.name) / "test.sqlite")
-        self.env = patch.dict(os.environ, {"TURSO_DATABASE_URL": self.url, "TURSO_AUTH_TOKEN": "", "GEMINI_API_KEY": "", "ACCESS_KEY": "", "APP_ORIGIN": ""})
+        self.env = patch.dict(os.environ, {"APP_ENV": "development", "OPS_ACCESS_KEY": "o" * 48, "TURSO_DATABASE_URL": self.url, "TURSO_AUTH_TOKEN": "", "GEMINI_API_KEY": "", "ACCESS_KEY": "", "APP_ORIGIN": ""})
         self.env.start()
         self.client = TestClient(app).__enter__()
+        import base64
+        self.client.headers["Authorization"] = "Basic " + base64.b64encode(b"operator:" + b"o" * 48).decode()
         self.post("start", {})
         store = Store(self.url)
         self.call = store.new_call(store.authenticate(self.client.cookies["session"])["id"])

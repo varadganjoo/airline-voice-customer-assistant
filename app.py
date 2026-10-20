@@ -1,6 +1,7 @@
 """FastAPI endpoints; voice streams directly from browser to Gemini."""
 
 import asyncio
+from contextlib import asynccontextmanager
 from datetime import datetime, timedelta, timezone
 from functools import lru_cache
 import hmac
@@ -19,20 +20,30 @@ from pydantic import BaseModel, ConfigDict, Field
 
 from database import PASSENGER, RateLimitExceeded, Store, digest
 from db_transport import DatabaseFailure
-from tools import lookup_policy, now_ms, trip_label
+from tools import POLICIES, lookup_policy, now_ms, trip_label
 from voice import live_config, validate_tool
 from workflow import process_event
 from resilience import ServiceBusy, api_slots, recovery_slots, voice_provider
 from uuid import uuid4
 import ops
 import telemetry
+from security import PROBES, SecurityBoundary, is_operator_path, validate_configuration
 
 CALL_IDLE_LIMIT_MS = 10 * 60_000  # Server backstop; the page itself checks in after 60 s and hangs up 40 s later.
 logger = logging.getLogger("airline.workflow")
 logger.setLevel(logging.INFO)
 logger.addHandler(logging.StreamHandler())
 logger.propagate = False
-app = FastAPI(title="Skyway Voice Demo", docs_url=None, redoc_url=None, openapi_url=None)
+@asynccontextmanager
+async def lifespan(application):
+    validate_configuration()
+    try:
+        yield
+    finally:
+        telemetry.drain()
+
+
+app = FastAPI(title="Skyway Voice Demo", lifespan=lifespan, docs_url=None, redoc_url=None, openapi_url=None)
 
 
 @app.middleware("http")
@@ -121,14 +132,15 @@ async def request_boundary(request: Request, call_next):
             return JSONResponse({"error": "Invalid JSON request."}, status_code=400)
     else:
         body = {}
-    access_key = os.getenv("ACCESS_KEY")
-    if os.getenv("APP_ORIGIN", "").startswith("https://") and not access_key:
+    exempt = request.url.path in PROBES or is_operator_path(request.url.path)
+    access_key = None if exempt else os.getenv("ACCESS_KEY")
+    if not exempt and os.getenv("APP_ORIGIN", "").startswith("https://") and not access_key:
         return JSONResponse({"error": "Demo access is not configured."}, status_code=503)
     link_key = request.query_params.get("k") if request.method == "GET" and request.url.path == "/" else None
     body_key = body.get("key") if request.url.path == "/api/start" else None
     if access_key:
         expected = digest(access_key)
-        has_cookie = hmac.compare_digest(request.cookies.get("access", ""), expected)
+        has_cookie = hmac.compare_digest(request.cookies.get("access", "").encode(), expected.encode())
         valid_link = isinstance(link_key, str) and hmac.compare_digest(digest(link_key), expected)
         valid_body = isinstance(body_key, str) and hmac.compare_digest(digest(body_key), expected)
         if not (has_cookie or valid_link or valid_body):
@@ -244,13 +256,17 @@ StoreDep = Annotated[Store, Depends(database)]
 
 
 @app.get("/api/health")
+@app.get("/health/live", include_in_schema=False)
 def health():
     return {"status": "alive"}
 
 
 @app.get("/api/ready")
+@app.get("/health/ready", include_in_schema=False)
 def readiness(store: StoreDep):
     store.rows("SELECT 1")
+    if not os.getenv("GEMINI_API_KEY") or any(lookup_policy(topic)["status"] == "unavailable" for topic in POLICIES):
+        return JSONResponse({"status": "not_ready"}, status_code=503)
     return {"status": "ready", "bookingWritesEnabled": os.getenv("BOOKING_WRITES_ENABLED", "true").lower() == "true"}
 
 
@@ -439,3 +455,5 @@ app.include_router(ops.router)
 if Path("dist").is_dir():
     from fastapi.staticfiles import StaticFiles
     app.mount("/", StaticFiles(directory="dist", html=True), name="frontend")
+
+app = SecurityBoundary(app)
