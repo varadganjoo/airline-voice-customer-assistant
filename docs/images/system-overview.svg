@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="620" viewBox="0 0 1200 620" role="img" aria-labelledby="title desc">
+  <title id="title">Skyway Airlines voice assistant architecture</title>
+  <desc id="desc">Voice streams directly from the browser to Gemini. The API validates requests and runs a guarded workflow that stores booking changes and receipts atomically. Policies are local dated summaries.</desc>
+  <defs>
+    <marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8" fill="#67dbc5"/></marker>
+    <style>text{font-family:Arial,Helvetica,sans-serif}.head{font-size:23px;font-weight:700;fill:#ecfdf5}.body{font-size:17px;fill:#c1d6d3}.label{font-size:14px;fill:#8aead4}.box{fill:#1c393c;stroke:#4a6f70;stroke-width:1.5}.edge{fill:none;stroke:#67dbc5;stroke-width:2;marker-end:url(#arrow)}</style>
+  </defs>
+  <rect width="1200" height="620" rx="18" fill="#10282c"/>
+  <text x="40" y="48" fill="#8aead4" font-size="14" letter-spacing="3">SKYWAY AIRLINES / SYSTEM OVERVIEW</text>
+  <text x="40" y="94" class="head" style="font-size:32px">Natural conversation. Server-owned changes.</text>
+  <path d="M190 205V140H1010V205" class="edge"/>
+  <text x="470" y="131" class="label">Direct media and typed conversation</text>
+  <rect x="40" y="205" width="310" height="130" rx="12" class="box"/>
+  <text x="62" y="240" class="head">Browser workspace</text>
+  <text x="62" y="274" class="body">Voice, text and receipts</text>
+  <text x="62" y="302" class="body">Optional microphone-off mode</text>
+  <rect x="445" y="205" width="310" height="130" rx="12" class="box"/>
+  <text x="467" y="240" class="head">FastAPI boundary</text>
+  <text x="467" y="274" class="body">Sessions, schemas, ownership</text>
+  <text x="467" y="302" class="body">Temporary constrained tokens</text>
+  <rect x="850" y="205" width="310" height="130" rx="12" class="box"/>
+  <text x="872" y="240" class="head">Gemini Live</text>
+  <text x="872" y="274" class="body">Conversation and native audio</text>
+  <text x="872" y="302" class="body">Requests declared tools</text>
+  <path d="M350 270H445" class="edge"/>
+  <text x="374" y="255" class="label">API</text>
+  <path d="M540 335V380H195V420" class="edge"/>
+  <rect x="40" y="420" width="310" height="125" rx="12" class="box"/>
+  <text x="62" y="454" class="head">Guarded workflow</text>
+  <text x="62" y="487" class="body">Verify, quote and approve</text>
+  <text x="62" y="516" class="body">Recheck before committing</text>
+  <rect x="445" y="420" width="310" height="125" rx="12" class="box"/>
+  <text x="467" y="454" class="head">SQLite / libSQL</text>
+  <text x="467" y="487" class="body">Booking + receipt transaction</text>
+  <text x="467" y="516" class="body">Versions and replay protection</text>
+  <path d="M350 482H445" class="edge"/>
+  <rect x="850" y="420" width="310" height="125" rx="12" class="box"/>
+  <text x="872" y="454" class="head">Reviewed policies</text>
+  <text x="872" y="487" class="body">Local, dated summaries</text>
+  <text x="872" y="516" class="body">Expired facts fail closed</text>
+  <path d="M660 335V380H1005V420" class="edge"/>
+  <text x="40" y="588" class="body">The provider key stays on the server. Inventory, payments, SMS and telephone transfer are simulated.</text>
+</svg>
