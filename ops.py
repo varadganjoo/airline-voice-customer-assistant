@@ -1,6 +1,6 @@
 """Observability dashboard API: metrics derived from spans, trace and call explorers, logs, and browser telemetry intake.
 
-Read endpoints sit behind the same access gate as the rest of the app. They return aggregates, span names, timings
+Read endpoints require a separate operator credential. They return aggregates, span names, timings
 and hashed call IDs only; telemetry never contains transcripts, codes, keys or booking contents.
 """
 
@@ -361,7 +361,7 @@ AttrValue = str | int | float | bool
 
 
 class BrowserSpan(BaseModel):
-    model_config = ConfigDict(extra="forbid")
+    model_config = ConfigDict(extra="forbid", allow_inf_nan=False)
     traceId: str = Field(pattern=r"^[0-9a-f]{32}$")
     spanId: str = Field(pattern=r"^[0-9a-f]{16}$")
     parentId: str | None = Field(default=None, pattern=r"^[0-9a-f]{16}$")
@@ -386,6 +386,10 @@ def ingest(body: TelemetryBody, request: Request) -> dict:
         caller = store.authenticate(request.cookies.get("session"))
         if not caller:
             raise HTTPException(401, "Start a call first.")
+        # ASVS 8.2.2: a caller may attach telemetry only to a call they own.
+        if body.callId and not store.rows("SELECT id FROM calls WHERE id=? AND account_id=? AND expires>?",
+                                         body.callId, caller["id"], now_ms()):
+            raise HTTPException(404, "Call unavailable.")
         store.limit("telemetry:" + caller["id"], 120, 60_000)
     finally:
         store.close()
