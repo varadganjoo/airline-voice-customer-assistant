@@ -7,7 +7,7 @@
 - Code revision: [e003678f84af26315e99a4c242dc625708dcc763](https://github.com/varadganjoo/airline-voice-customer-assistant/commit/e003678f84af26315e99a4c242dc625708dcc763).
 - Complete CI evidence: [Quality and security run 39413170203](https://github.com/varadganjoo/airline-voice-customer-assistant/actions/runs/39413170203).
 - CI environment: GitHub-hosted Ubuntu, Python 3.13 and Node 22. Exact runner and tool versions are retained in the job logs.
-- Local environment: Windows, Python 3.11.0 and Node 22.14.0. Managed network restrictions deny loopback connections with WinError 10013 and deny outbound package/provider connections.
+- Local verification environment: Windows, Python 3.11.0 and Node 22.14.0. The managed shell denies network connections. For browser testing, the maintainer started the same source using npm start in a normal Windows terminal (uv selected CPython 3.14.7), serving http://127.0.0.1:3001. Chrome connected successfully with microphone capture disabled. See [live browser evidence](live-browser-test.md).
 - Review scope: changed HTTP/deployment boundaries, operator access, telemetry intake/queueing, container and workflow configuration; connected booking ownership, approval and replay contracts are covered by the regression suite. This is not an independent exhaustive repository security assessment.
 
 ## Acceptance evidence
@@ -25,8 +25,8 @@
 | Telemetry overload | PASS | A stalled writer is bounded to 64 queued/in-flight batches. Excess batches are dropped; capacity is released after completion. Telemetry is diagnostic and may be lost. |
 | Microphone-off mode | PASS | The frontend regression invokes the real capture function with microphone=off and verifies zero device requests. This does not prove voice quality. |
 | Secret exposure checks | PASS, scoped | Tracked files exclude local environment files and databases. Manual provider-key/token/private-key patterns found no credentials in the publication candidate. No dedicated entropy/history scanner is installed locally. |
-| Live Gemini conversation | BLOCKED | Existing local provider credentials were loaded privately, but the managed runtime cannot start a usable networked app or connect to the provider. No successful live session is claimed. |
-| App screenshots, keyboard and responsive journeys | BLOCKED | Local application navigation was refused/timed out. Screenshots must come from an actual successful browser session before the requested public publication. |
+| Live Gemini conversation | PASS, scoped | A real Gemini Live session accepted typed caller turns with microphone capture disabled. The Skyway greeting, reviewed policy answer, booking verification, proposal, explicit approval, one saved seat change and simulated handoff completed. No microphone speech, listening-quality or noise benchmark is claimed. |
+| App screenshots, keyboard and responsive journeys | PASS, scoped | Six actual Chrome captures are committed with a [journey record](live-browser-test.md). Keyboard Tab/Enter operated the policy disclosure; a 390 x 844 viewport override showed a stacked layout without horizontal document overflow. This is not a full accessibility or device matrix assessment. |
 | Adversarial live voice evaluation | BLOCKED | Deterministic input/schema, ownership, malformed-output and consent-failure regressions pass. No current live prompt-injection campaign, accent/noise benchmark or independent pronunciation review ran. |
 | Container build/image scan | BLOCKED | Docker CLI exists, but the Docker Desktop Linux daemon is not running. Default base image tags still need approved digest pins, image scanning and provenance. |
 | Restore, load, failover and alerting | BLOCKED | No representative load/soak run, hosted database restore exercise, regional failure test or alert delivery evidence. |
