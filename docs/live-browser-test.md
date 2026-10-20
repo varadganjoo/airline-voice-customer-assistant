@@ -2,7 +2,7 @@
 
 ## Environment and scope
 
-- Source: enterprise-readiness code revision b47c25696c362efc08894d1aad9407f696150ff4; subsequent changes contain documentation and captures only.
+- Source: enterprise-readiness code revision b47c25696c362efc08894d1aad9407f696150ff4. Historical policy product/tier labels were normalised after capture; the tested workflow code and policy limits are unchanged.
 - Browser: connected desktop Chrome on Windows, actual application at http://localhost:3001/?microphone=off.
 - Runtime: npm start in the maintainer's terminal, CPython 3.14.7 selected by uv; development mode and an ignored local SQLite database.
 - Provider: existing server-side Gemini credential, reused locally without committing it. A real Live session produced assistant responses and invoked application tools.

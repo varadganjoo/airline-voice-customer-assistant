@@ -4,8 +4,8 @@
 
 ## Revision and environment
 
-- Code revision: [b47c25696c362efc08894d1aad9407f696150ff4](https://github.com/varadganjoo/airline-voice-customer-assistant/commit/b47c25696c362efc08894d1aad9407f696150ff4).
-- Complete CI evidence: [Quality and security run 39413170203](https://github.com/varadganjoo/airline-voice-customer-assistant/actions/runs/39413170203).
+- Code revision: [b47c25696c362efc08894d1aad9407f696150ff4](https://github.com/varadganjoo/airline-voice-customer-assistant/commit/b47c25696c362efc08894d1aad9407f696150ff4). Policy product/tier labels were subsequently normalised across the branch history; eligibility, prices and timings were preserved.
+- Complete CI evidence after policy-label normalisation: [Quality and security run 39477513462](https://github.com/varadganjoo/airline-voice-customer-assistant/actions/runs/39477513462), revision 2213fd7141bdb36076dbcc33b97aef719820a9f2.
 - CI environment: GitHub-hosted Ubuntu, Python 3.13 and Node 22. Exact runner and tool versions are retained in the job logs.
 - Local verification environment: Windows, Python 3.11.0 and Node 22.14.0. The managed shell denies network connections. For browser testing, the maintainer started the same source using npm start in a normal Windows terminal (uv selected CPython 3.14.7), serving http://127.0.0.1:3001. Chrome connected successfully with microphone capture disabled. See [live browser evidence](live-browser-test.md).
 - Review scope: changed HTTP/deployment boundaries, operator access, telemetry intake/queueing, container and workflow configuration; connected booking ownership, approval and replay contracts are covered by the regression suite. This is not an independent exhaustive repository security assessment.

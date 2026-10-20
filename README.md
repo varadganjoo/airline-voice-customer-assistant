@@ -155,6 +155,21 @@ Open `/ops` and authenticate as `operator` with `OPS_ACCESS_KEY`. Customer invit
 
 Readiness does not prove model access, live identity delivery or production capacity. Telemetry is best-effort: its queue is capped at 64 batches and drops excess work instead of blocking callers. Browser measurements are untrusted diagnostics, not an immutable financial audit trail.
 
+### Observability workspace
+
+The protected dashboard has four connected views:
+
+| View | Use it to investigate |
+| --- | --- |
+| **Overview** | Request/error rates, API and voice reply percentiles, tool outcomes, approval steps and observed dependency failures. |
+| **Traces** | Individual requests and their workflow, database and approval-judge spans in a waterfall. |
+| **Calls** | Hashed call journeys, verification, quoted/committed changes, recovery events, model usage and the end reason. |
+| **Logs** | Searchable application events linked to their call and trace. |
+
+The browser propagates W3C trace context into API requests; server and browser events are written asynchronously to SQLite/libSQL. Select a window from 15 minutes to 24 hours and drill from a tool/endpoint or call into its traces. Live mode refreshes the active view every ten seconds.
+
+See the [observability guide](docs/observability.md) for access setup, a collection diagram, troubleshooting steps, privacy boundaries, query limits and the meaning of each metric. Recorded telemetry targets approximately 24-hour retention with opportunistic cleanup. It is not a billing ledger or a substitute for production alerting.
+
 ## Containerised staging
 
 The Dockerfile uses a separate frontend build stage, hash-locked Python dependencies and a non-root runtime (UID/GID 10001). Environment files, databases and local artifacts are excluded from the build context.
