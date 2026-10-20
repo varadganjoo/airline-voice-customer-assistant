@@ -57,7 +57,38 @@ A useful evaluation sequence:
 
 ### Screenshots
 
-Live application screenshots are pending a successful browser session. The architecture image is a system diagram, not a screenshot or proof of a completed voice evaluation. No synthetic conversation is presented as a live result.
+Captured from the running application in Chrome on **20 October 2026**, using a real Gemini connection and **typed caller input with microphone capture disabled**. Names, trips, messages and verification codes shown are synthetic fixtures. These are application captures, not mock-ups.
+
+**Connected session.** The assistant identifies itself as Skyway Airlines; microphone capture is disabled.
+
+![Live Skyway session with microphone unavailable and typed input enabled](docs/screenshots/microphone-off-session.jpg)
+
+**Reviewed policy.** Checked-bag dimensions and weight limits come from the dated local summary. Missing carry-on rules prompted an offer of human assistance.
+
+![Checked baggage answer with the reviewed policy source visible](docs/screenshots/reviewed-policy.jpg)
+
+**Approval required.** Asking about the price leaves the proposed seat change pending. A database check confirmed seat 2F, version 0 and no saved actions.
+
+![A pricing question leaves the seat proposal waiting for approval](docs/screenshots/approval-required.jpg)
+
+**Saved change.** Explicit approval moves the synthetic booking to seat 3F. The database then contained version 1 and exactly one saved action.
+
+![Completed seat change and timestamped interaction notes](docs/screenshots/saved-seat-change.jpg)
+
+**Handoff brief.** The case summary preserves the completed change and unresolved carry-on question before the simulated transfer ends the session. No real telephone transfer occurred.
+
+![Saved representative handoff brief after the simulated transfer](docs/screenshots/handoff-brief.jpg)
+
+<details>
+<summary>Mobile layout capture</summary>
+
+The workspace was checked with a 390 x 844 viewport override. Its stacked layout had no horizontal document overflow. This is a basic responsive check, not a full device or accessibility certification.
+
+![Stacked mobile customer service workspace](docs/screenshots/mobile-workspace.jpg)
+
+</details>
+
+See the [live browser test record](docs/live-browser-test.md) for the exact journey, evidence and limits.
 
 ## How changes stay under server control
 
